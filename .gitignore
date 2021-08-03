@@ -3,8 +3,9 @@
 
 # But not these files...
 !.gitignore
-!.README.md
-
+!README.md
+!contracts
+!test
 
 #!.gitignore
 #!script.pl
@@ -13,6 +14,7 @@
 
 # ...even if they are in subdirectories
 #!*/
+
 
 # if the files to be tracked are in subdirectories
 #!*/a/b/file1.txt
