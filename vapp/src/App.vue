@@ -2,6 +2,7 @@
   <v-app>
     <div v-if="isDrizzleInitialized" id="app">
       <Header />
+      <ItemContainer />
     </div>
     <div v-else>Loading...</div>
   </v-app>
@@ -9,12 +10,14 @@
 
 <script>
 import Header from '@/components/Header'
+import ItemContainer from '@/components/ItemContainer'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'app',
   components: {
-    Header
+    Header,
+    ItemContainer
   },
 
   computed: mapGetters('drizzle', ['isDrizzleInitialized'])

@@ -33,7 +33,7 @@
             <strong>Address: </strong> {{ activeAccount }}
           </p>
           <p class="text-caption mt-1">
-            <strong>Balance: </strong> {{ activeBalance }}
+            <strong>Balance: </strong> {{ drizzleInstance.web3.utils.fromWei(activeBalance, "ether") }}
           </p>
         </v-card-text>
         <v-divider></v-divider>
@@ -63,7 +63,7 @@ export default {
   computed: {
     ...mapGetters("accounts", ["activeAccount", "activeBalance"]),
     ...mapGetters("drizzle", ["isDrizzleInitialized", "drizzleInstance"]),
-    ...mapGetters("profile", ["getOwnedGnfs"]),
+    ...mapGetters("profile", ["getOwnedGnft"]),
     userAccount() {
       return this.activeAccount
     },
@@ -72,10 +72,10 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("profile/fetchOwnedGnfs");
+    this.$store.dispatch("profile/fetchOwnedGnft");
   },
   methods: {
-    ...mapActions("profile", ["fetchOwnedGnfs"]),
+    ...mapActions("profile", ["fetchOwnedGnft"]),
 
   }
 }
