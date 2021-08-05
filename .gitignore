@@ -4,8 +4,8 @@
 # But not these files...
 !.gitignore
 !README.md
-!*/Gnft.sol
-!*/Gnft.test.js
+!*/contracts/Gnft.sol
+!*/test/Gnft.test.js
 
 #!.gitignore
 #!script.pl
