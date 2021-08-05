@@ -1,11 +1,9 @@
 # Ignore everything
-*
-
+/node_modules
+/vapp/node_modules
+/vapp/src/contracts
 # But not these files...
-!.gitignore
-!README.md
-!*/contracts/Gnft.sol
-!*/test/Gnft.test.js
+
 
 #!.gitignore
 #!script.pl

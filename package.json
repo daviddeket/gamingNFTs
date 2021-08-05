@@ -1,0 +1,28 @@
+{
+  "name": "drizzle-vue-box",
+  "version": "0.0.1",
+  "description": "",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": {
+    "name": "Amal Sudama",
+    "email": "amal@trufflesuite.com",
+    "url": "http://github.com/truffle-box/drizzle-vue-box"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "openzeppelin-solidity": "^2.1.1",
+    "truffle-flattener": "^1.5.0"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4",
+    "chai-as-promised": "^7.1.1",
+    "mocha": "^9.0.3"
+  }
+}
