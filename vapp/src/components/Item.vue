@@ -9,26 +9,50 @@
         <strong>Rarity: </strong>{{ gnft.rarity }}
       </p>
     </v-card-text>
-    <v-card-actions>
-      <v-text-field
-          v-model="price"
-          type="number"
-          label="Name"
-          required
-      ></v-text-field>
+    <v-card-actions v-if="gnft.purchasePrice <= 0 && gnft.currentIsOwner">
+      <form>
+        <v-text-field
+            v-model="price"
+            type="number"
+            label="price"
+            required
+        ></v-text-field>
+        <v-btn
+            outlined
+            rounded
+            text
+            @click="setAsPurchasable()"
+        >
+          add to market
+        </v-btn>
+      </form>
+    </v-card-actions>
+    <v-card-actions v-else-if="gnft.purchasePrice > 0 && gnft.currentIsOwner">
       <v-btn
           outlined
           rounded
           text
-          @click=""
+          @click="unSetAsPurchasable()"
       >
-        Button
+        remove<br>from market
+      </v-btn>
+    </v-card-actions>
+    <v-card-actions v-else-if="gnft.purchasePrice > 0 && !gnft.currentIsOwner">
+      <v-btn
+          outlined
+          rounded
+          text
+          @click="buyGnft()"
+      >
+        buy Gnft<br>for <i>{{ gnft.purchasePrice }}</i>
       </v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
+import {mapActions, mapGetters} from "vuex";
+
 export default {
   name: "Item",
   props: {
@@ -39,9 +63,24 @@ export default {
   data: () =>({
     price: 0
   }),
-  methode: {
-    setAsPurchasable() {
-
+  computed: {
+    ...mapGetters("accounts", ["activeAccount", "activeBalance"]),
+    ...mapGetters("drizzle", ["isDrizzleInitialized", "drizzleInstance"]),
+    ...mapGetters("profile", ["getGnfts"]),
+  },
+  methods: {
+    ...mapActions("profile", ["fetchOwnedGnft", "setPurchasable", "unSetPurchasable", "buyGnft"]),
+    async setAsPurchasable() {
+      await this.$store.dispatch("profile/setPurchasable", { tokenId: this.gnft.tokenId, price: this.price });
+      await this.$store.dispatch("profile/fetchOwnedGnft");
+    },
+    async unSetAsPurchasable() {
+      await this.$store.dispatch("profile/unSetPurchasable", this.gnft.tokenId);
+      await this.$store.dispatch("profile/fetchOwnedGnft");
+    },
+    async buyGnft() {
+      await this.$store.dispatch("profile/buyGnft", this.gnft.tokenId);
+      await this.$store.dispatch("profile/fetchOwnedGnft");
     }
   }
 }

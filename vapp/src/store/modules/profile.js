@@ -6,7 +6,7 @@ const gnftMapping = () => ({
     rarity: 0,
     owner: '',
     currentIsOwner: false,
-    isPurchasable: false,
+    purchasePrice: 0,
     tokenId: ''
 })
 const state = {
@@ -44,7 +44,8 @@ const actions = {
             gnft.rarity = await drizzleInstance.contracts.Gnft.methods.rarities(i - 1).call()
             gnft.owner = await drizzleInstance.contracts.Gnft.methods.ownerOf(i - 1).call()
             gnft.currentIsOwner = activeAccount === gnft.owner
-            gnft.isPurchasable = await drizzleInstance.contracts.Gnft.methods.tokenIdToPrice(i - 1).call()
+            const purchasePrice = await drizzleInstance.contracts.Gnft.methods.tokenIdToPrice(i - 1).call()
+            gnft.purchasePrice = parseInt(purchasePrice)
             gnft.tokenId = i - 1
             gnfts.push(gnft)
         }
@@ -56,9 +57,10 @@ const actions = {
         const response = await drizzleInstance.contracts.Gnft.methods.mint(svg).send({ activeAccount })
         console.log('create new gnft', response)
     },
-    async setPurchasable({ rootState }, tokenId, price) {
+    async setPurchasable({ rootState }, { tokenId, price }) {
         let drizzleInstance = rootState.drizzle.drizzleInstance;
         let activeAccount = rootState.accounts.activeAccount;
+        console.log('before set purchasable', tokenId, price)
         const response = await drizzleInstance.contracts.Gnft.methods.allowBuy(tokenId, price).send({ activeAccount })
         console.log('set as purchasable', response)
     },

@@ -13,7 +13,7 @@ contract Gnft is ERC721Full {
     uint256[] public types;
     uint256[] public rarities;
     mapping(string => bool) _svgExists;
-    mapping(uint => uint) tokenIdToPrice;
+    mapping(uint => uint) public tokenIdToPrice;
 
     event TokenMinted(string _svg, uint _id, uint _strength, uint _cost, uint _type, uint _rarity);
     event BuyingAllowed(uint _tokenId, uint _price, address _sender);
