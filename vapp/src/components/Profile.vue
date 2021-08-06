@@ -33,7 +33,7 @@
             <strong>Address: </strong> {{ activeAccount }}
           </p>
           <p class="text-caption mt-1">
-            <strong>Balance: </strong> {{ drizzleInstance.web3.utils.fromWei(activeBalance, "ether") }}
+            <strong>Balance: </strong> {{ getEthBalance }}
           </p>
         </v-card-text>
         <v-divider></v-divider>
@@ -68,7 +68,10 @@ export default {
       return this.activeAccount
     },
     getEthBalance() {
-      return this.drizzleInstance.web3.utils.fromWei(this.activeBalance, "ether");
+      if (this.activeBalance !== undefined)
+        return this.drizzleInstance.web3.utils.fromWei(this.activeBalance, "ether");
+      else
+        return ''
     }
   },
   created() {
@@ -76,7 +79,6 @@ export default {
   },
   methods: {
     ...mapActions("profile", ["fetchOwnedGnft"]),
-
   }
 }
 </script>
