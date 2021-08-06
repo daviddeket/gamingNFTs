@@ -71,4 +71,5 @@ contract('Gnft', (accounts) => {
       assert.equal(result.join(','), expected.join(','))
     })
   })
+
 })
