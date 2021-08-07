@@ -70,10 +70,14 @@ const actions = {
         const response = await drizzleInstance.contracts.Gnft.methods.disallowBuy(tokenId).send({ activeAccount })
         console.log('unSet as purchasable', response)
     },
-    async buyGnft({ rootState }, tokenId) {
+    async buyGnft({ rootState }, { tokenId, price }) {
         let drizzleInstance = rootState.drizzle.drizzleInstance;
         let activeAccount = rootState.accounts.activeAccount;
-        const response = await drizzleInstance.contracts.Gnft.methods.buy(tokenId).send({ activeAccount })
+        //var etherAmount = web3.toBigNumber(price);
+        //var weiValue = web3.toWei(etherAmount,'ether');
+        const priceInWei = drizzleInstance.web3.utils.toWei(price.toString(), "ether");
+        console.log('priceInWei', priceInWei)
+        const response = await drizzleInstance.contracts.Gnft.methods.buy(tokenId).send({ from: activeAccount, gas: priceInWei })
         console.log('buy Gnft', response)
     }
     /*

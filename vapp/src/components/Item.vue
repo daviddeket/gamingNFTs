@@ -79,7 +79,7 @@ export default {
       await this.$store.dispatch("profile/fetchOwnedGnft");
     },
     async buyGnft() {
-      await this.$store.dispatch("profile/buyGnft", this.gnft.tokenId);
+      await this.$store.dispatch("profile/buyGnft", { tokenId: this.gnft.tokenId, price: this.gnft.purchasePrice });
       await this.$store.dispatch("profile/fetchOwnedGnft");
     }
   }
