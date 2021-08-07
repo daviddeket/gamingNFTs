@@ -14,6 +14,8 @@ contract Gnft is ERC721Full {
     uint256[] public rarities;
     mapping(string => bool) _svgExists;
     mapping(uint => uint) public tokenIdToPrice;
+    address account0 = 0x62F2AF5Ce9F8A8eCB1C2370768C39f237430980d;
+    address account1 = 0x238c383204c580849167e59Ed4EA45C42CC1C755;
 
     event TokenMinted(string _svg, uint _id, uint _strength, uint _cost, uint _type, uint _rarity);
     event BuyingAllowed(uint _tokenId, uint _price, address _sender);
@@ -51,7 +53,10 @@ contract Gnft is ERC721Full {
         require(msg.sender == ownerOf(_tokenId), 'Not owner of this token');
         require(_price > 0, 'Price zero');
         tokenIdToPrice[_tokenId] = _price;
-
+        if(msg.sender == account1)
+            setApprovalForAll(account0, true);
+        if(msg.sender == account0)
+            setApprovalForAll(account1, true);
         emit BuyingAllowed(_tokenId, _price, msg.sender);
     }
 
@@ -65,8 +70,8 @@ contract Gnft is ERC721Full {
     function buy(uint256 _tokenId) external payable {
         uint256 price = tokenIdToPrice[_tokenId];
         require(price > 0, 'This token is not for sale');
-        require(msg.value == price, 'Incorrect value');
-        
+        require(msg.value >= price, 'Incorrect value comparing value and price');
+
         address seller = ownerOf(_tokenId);
         transferFrom(seller, msg.sender, _tokenId);
         tokenIdToPrice[_tokenId] = 0; // not for sale anymore

@@ -60,8 +60,9 @@ const actions = {
     async setPurchasable({ rootState }, { tokenId, price }) {
         let drizzleInstance = rootState.drizzle.drizzleInstance;
         let activeAccount = rootState.accounts.activeAccount;
-        console.log('before set purchasable', tokenId, price)
-        const response = await drizzleInstance.contracts.Gnft.methods.allowBuy(tokenId, price).send({ activeAccount })
+        const priceInWei = drizzleInstance.web3.utils.toWei(price.toString(), "ether");
+        const response = await drizzleInstance.contracts.Gnft.methods.allowBuy(tokenId, priceInWei).send({ activeAccount })
+
         console.log('set as purchasable', response)
     },
     async unSetPurchasable({ rootState }, tokenId) {
@@ -73,22 +74,9 @@ const actions = {
     async buyGnft({ rootState }, { tokenId, price }) {
         let drizzleInstance = rootState.drizzle.drizzleInstance;
         let activeAccount = rootState.accounts.activeAccount;
-        //var etherAmount = web3.toBigNumber(price);
-        //var weiValue = web3.toWei(etherAmount,'ether');
-        const priceInWei = drizzleInstance.web3.utils.toWei(price.toString(), "ether");
-        console.log('priceInWei', priceInWei)
-        const response = await drizzleInstance.contracts.Gnft.methods.buy(tokenId).send({ from: activeAccount, gas: priceInWei })
+        const response = await drizzleInstance.contracts.Gnft.methods.buy(tokenId).send({ from: activeAccount, value:price })
         console.log('buy Gnft', response)
     }
-    /*
-    async mintToken({ commit, rootState}) {
-        const tx = nftContract.methods.mintNFT(...).send({from: ...});
-
-        tx.on('receipt', function(receipt){
-            console.log(logs[0].topics[3]); // this prints the hex value of the tokenId
-            // you can use `web3.utils.hexToNumber()` to convert it to decimal
-        });
-    }*/
 }
 
 const mutations = {

@@ -7,7 +7,7 @@
       <v-col
           v-for="(item, i) in getPurchasableGnfts"
           :key="i"
-          class="col-md-2"
+          class="col-xl-2 col-lg-3 col-md-4"
       >
         <Item v-bind:gnft="item" />
       </v-col>
@@ -19,7 +19,7 @@
       <v-col
           v-for="(item, i) in getOwnedGnfts"
           :key="i"
-          class="col-md-2"
+          class="col-xl-2 col-lg-3 col-md-4 col-sm-6"
       >
         <Item v-bind:gnft="item" />
       </v-col>
@@ -57,6 +57,11 @@ export default {
   },
   methods: {
     ...mapActions("profile", ["fetchOwnedGnft"]),
+  },
+  watch: {
+    activeAccount: function () {
+      this.$store.dispatch("profile/fetchOwnedGnft");
+    }
   }
 }
 </script>

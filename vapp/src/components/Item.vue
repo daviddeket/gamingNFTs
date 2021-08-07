@@ -10,42 +10,50 @@
       </p>
     </v-card-text>
     <v-card-actions v-if="gnft.purchasePrice <= 0 && gnft.currentIsOwner">
-      <form>
-        <v-text-field
-            v-model="price"
-            type="number"
-            label="price"
-            required
-        ></v-text-field>
+      <v-container>
+        <form>
+          <v-text-field
+              v-model="price"
+              type="number"
+              label="price"
+              required
+          ></v-text-field>
+          <v-btn
+              outlined
+              rounded
+              text
+              @click="setAsPurchasable()"
+          >
+            add to market
+          </v-btn>
+        </form>
+      </v-container>
+    </v-card-actions>
+    <v-card-actions v-else-if="gnft.purchasePrice > 0 && gnft.currentIsOwner">
+      <v-container>
         <v-btn
             outlined
             rounded
             text
-            @click="setAsPurchasable()"
+            @click="unSetAsPurchasable()"
         >
-          add to market
+          remove<br>from market
         </v-btn>
-      </form>
-    </v-card-actions>
-    <v-card-actions v-else-if="gnft.purchasePrice > 0 && gnft.currentIsOwner">
-      <v-btn
-          outlined
-          rounded
-          text
-          @click="unSetAsPurchasable()"
-      >
-        remove<br>from market
-      </v-btn>
+      </v-container>
     </v-card-actions>
     <v-card-actions v-else-if="gnft.purchasePrice > 0 && !gnft.currentIsOwner">
-      <v-btn
-          outlined
-          rounded
-          text
-          @click="buyGnft()"
-      >
-        buy Gnft<br>for <i>{{ gnft.purchasePrice }}</i>
-      </v-btn>
+      <v-container>
+        <v-btn
+            outlined
+            rounded
+            text
+            @click="buyGnft()"
+        >
+          <div>
+            buy for <i>{{ drizzleInstance.web3.utils.fromWei(gnft.purchasePrice.toString(), "ether") }} Eth</i>
+          </div>
+        </v-btn>
+      </v-container>
     </v-card-actions>
   </v-card>
 </template>
